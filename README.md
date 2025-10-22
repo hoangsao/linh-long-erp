@@ -6,13 +6,13 @@ Linh-Long ERP is a minimal full-stack sample project demonstrating clean layerin
 
 - Clean architecture with layered projects (API, Application, Domain, Infrastructure)
 - Authentication using ASP.NET Identity, JWT access tokens and refresh tokens
-- CQRS-style organization with MediatR, FluentValidation and AutoMapper
+- CQRS-style organization with MediatR, FluentValidation
 - React frontend built with Vite + TypeScript
 - Works with SQL Server (production) or SQLite (easy local dev)
 
 ## Tech stack
 
-- Backend: ASP.NET Core 8, Entity Framework Core, ASP.NET Identity, MediatR, FluentValidation, AutoMapper, Serilog
+- Backend: ASP.NET Core 8, Entity Framework Core, ASP.NET Identity, MediatR, FluentValidation
 - Frontend: React (Vite + TypeScript), Axios, Zustand (auth state)
 - Database: SQL Server (recommended) or SQLite (recommended for quick demos)
 
