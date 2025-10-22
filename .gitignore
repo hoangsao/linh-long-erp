@@ -1,0 +1,140 @@
+# .gitignore for a mono-repo with ASP.NET Core (Visual Studio) and a Vite/React app
+# See https://github.com/github/gitignore for templates
+
+# OS
+############################
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.stackdump
+
+# Node.js
+############################
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+#package-lock.json
+yarn.lock
+.pnpm-store
+
+# Vite / build output
+dist/
+.build/
+coverage/
+
+# .env files (local envs)
+.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Visual Studio
+############################
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+TestResults/
+
+# Visual Studio Code
+.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# .NET
+############################
+bin/
+obj/
+**/bin/
+**/obj/
+*.db
+*.db-journal
+*.bak
+*.log
+*.vspscc
+*.vssscc
+
+# Rider
+.idea/
+*.sln.iml
+
+# NuGet
+*.nupkg
+# The packages folder can be ignored because of Package Restore
+**/packages/*
+# except build/, which is used as an MSBuild target.
+!**/packages/build/
+# Uncomment if necessary however generally it will be regenerated when needed
+# project.lock.json
+# The package cache
+.nuget/
+
+# Entity Framework
+*.db
+*.mdf
+*.ldf
+
+# dotnet user secrets
+secrets.json
+*/secrets.json
+
+# dotnet tools
+.dotnet_tool_restore
+
+# Docker
+############################
+docker-compose.override.yml
+**/docker-compose.override.yml
+docker-compose.*.yml
+docker-compose.*.yaml
+*.dockerfile
+
+# Logs
+############################
+logs/
+*.log
+
+# Testing
+############################
+coverage/
+*.coverage
+*.coveragexml
+TestResults/
+
+# Certificates
+*.pfx
+*.pem
+*.key
+
+# JetBrains
+############################
+*.iml
+out/
+
+# Misc
+############################
+.DS_Store
+Thumbs.db
+.idea/
+
+# Specific project files (added for this repo layout)
+LinhLongApi/**/bin/
+LinhLongApi/**/obj/
+LinhLong.Application/**/bin/
+LinhLong.Application/**/obj/
+LinhLong.Domain/**/bin/
+LinhLong.Domain/**/obj/
+LinhLong.Infrastructure/**/bin/
+LinhLong.Infrastructure/**/obj/
+LinhLongApp/node_modules/
+LinhLongApp/dist/
+
+# Allow checked in lockfile if desired; comment out above node lock ignores if you want package-lock.json checked in

@@ -1,0 +1,26 @@
+@use 'variables' as *;
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+.app-padding {
+  padding: $spacing;
+}
+
+.text-muted {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
