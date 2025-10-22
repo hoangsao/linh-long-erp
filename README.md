@@ -1,6 +1,6 @@
-# Linh-Long ERP
+# Linh Long ERP
 
-Linh-Long ERP is a minimal full-stack sample project demonstrating clean layering, authentication (JWT + Refresh Token), and a React client.  
+Linh Long ERP is a minimal full-stack sample project demonstrating clean layering, authentication (JWT + Refresh Token), and a React client.  
 This repository is a coding-challenge style reference implementation showing practical patterns for a small enterprise app.
 
 ---
