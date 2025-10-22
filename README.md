@@ -7,7 +7,7 @@ This repository is a coding-challenge style reference implementation showing pra
 
 ## Key Features
 - Clean Architecture with layered projects (API, Application, Domain, Infrastructure)
-- Authentication using ASP.NET Identity, JWT Access Tokens + Refresh Tokens
+- Authentication using ASP.NET Identity with **cookie-based JWT** (access + refresh)
 - CQRS-style organization with MediatR and FluentValidation
 - React frontend built with Vite + TypeScript
 - Works with SQL Server (production) or SQLite (easy local dev)
@@ -16,7 +16,7 @@ This repository is a coding-challenge style reference implementation showing pra
 
 ## Tech Stack
 - **Backend:** ASP.NET Core 8, Entity Framework Core, ASP.NET Identity, MediatR, FluentValidation  
-- **Frontend:** React (Vite + TypeScript), Axios, Zustand (auth state)  
+- **Frontend:** React (Vite + TypeScript), Axios, Zustand (UI state)  
 - **Database:** SQL Server (recommended) or SQLite (for quick demos)
 
 ---
@@ -123,6 +123,56 @@ npm run dev
 
 ---
 
+## Authentication (Cookie-Based, Brief)
+
+- Frontend sends `POST /auth/login` with credentials.  
+- API validates via ASP.NET Identity and **sets `accessToken` and `refreshToken` as HTTP-only cookies** (with `Secure` in production and appropriate `SameSite`).  
+- Frontend **does not attach an Authorization header**. Instead, it calls APIs with `axios` configured as `withCredentials: true`, so cookies are sent automatically.  
+- When the access token expires, the frontend calls `POST /auth/refresh-token` (also with credentials). The API reads the **refresh token from the cookie**, issues new cookies, and the client retries if needed.  
+- Logout endpoint clears cookies by setting them with an expired date (server-side invalidation as applicable).
+
+**Frontend Axios setup (example):**
+```ts
+// src/app/axios.ts
+import axios from "axios";
+
+export const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  withCredentials: true, // send cookies with every request
+});
+```
+
+**CORS essentials (Backend):**
+```csharp
+services.AddCors(options =>
+{
+    options.AddPolicy("FE", policy =>
+    {
+        policy
+           .WithOrigins("https://localhost:5174") // frontend dev origin
+           .AllowAnyHeader()
+           .AllowAnyMethod()
+           .AllowCredentials(); // <-- required for cookies
+    });
+});
+app.UseCors("FE");
+```
+
+**Cookie flags (Backend when issuing tokens):**
+```csharp
+var cookieOptions = new CookieOptions
+{
+    HttpOnly = true,
+    Secure = true, // true in production
+    SameSite = SameSiteMode.Lax, // or Strict/None depending on scenario
+    Path = "/",
+    Expires = DateTimeOffset.UtcNow.AddMinutes(15) // for access token; refresh token longer
+};
+Response.Cookies.Append("accessToken", jwt, cookieOptions);
+```
+
+---
+
 ## Common Commands
 
 ### Backend
@@ -146,21 +196,12 @@ npm run preview    # Preview production build
 
 ---
 
-## Authentication (Brief)
-- Frontend sends `POST /auth/login` with credentials.  
-- API validates user via ASP.NET Identity → returns **Access Token** + **Refresh Token**.  
-- Frontend stores tokens in memory (Zustand) and Axios attaches `Authorization: Bearer <token>`.  
-- On 401 (expired), Axios calls `POST /auth/refresh-token`, receives new tokens, and retries.  
-- Logout clears tokens and invalidates the refresh token server-side.
-
----
-
 ## Troubleshooting
+- **401 without Authorization header** → Ensure `axios` has `withCredentials: true` and CORS policy has `.AllowCredentials()` with the correct origin.  
+- **Cookies not set** → Check `Secure`, `SameSite`, and that you are using HTTPS in dev (or relax cookie options during dev).  
 - **404** → Ensure API is running at `https://localhost:5161` and CORS allows `https://localhost:5174`.  
 - **EF migration not found** → Check `LinhLong.Infrastructure/Migrations` exists and use `-p` and `-s` flags.  
-- **SQL Server container fails** → Use a strong SA password (≥ 8 chars with uppercase, lowercase, number, symbol).  
-- **CORS issues** → Configure policy in `LinhLong.Api` Startup to allow frontend origin.  
-- **HTTPS cert errors** → Run `dotnet dev-certs https --trust` or switch to HTTP for local testing.
+- **HTTPS cert errors** → Run `dotnet dev-certs https --trust` or switch to HTTP for local-only testing.
 
 ---
 
