@@ -34,6 +34,9 @@ coverage/
 .env.test.local
 .env.production.local
 
+# Keep the example file
+!.env.example
+
 # Visual Studio
 ############################
 .vs/
