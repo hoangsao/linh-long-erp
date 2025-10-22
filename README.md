@@ -112,6 +112,35 @@ npm run dev
 
 ---
 
+## 🧩 Database Migration Notes
+
+By default, the project uses **SQLite** for demo purposes.  
+If you want to switch to **SQL Server**, follow these steps:
+
+1. Delete the existing migration folder:  
+   ```
+   LinhLong.Infrastructure/Data/Migrations
+   ```
+
+2. Open `LinhLong.Infrastructure/DependencyInjection.cs` and change the database provider line:  
+   ```csharp
+   options.UseSqlServer(configuration.GetConnectionString("Default"));
+   ```
+
+3. Create a new migration for SQL Server:
+   ```bash
+   dotnet ef migrations add InitialSql -p LinhLong.Infrastructure -s LinhLong.Api -o Data/Migrations
+   ```
+
+4. Update the database:
+   ```bash
+   dotnet ef database update -p LinhLong.Infrastructure -s LinhLong.Api
+   ```
+
+After switching, the system will use **SQL Server** instead of SQLite.
+
+---
+
 ## 🧑‍💻 Demo Credentials
 | Role | Username | Password |
 |------|-----------|-----------|

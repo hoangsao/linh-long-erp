@@ -140,4 +140,7 @@ LinhLong.Infrastructure/**/obj/
 LinhLongApp/node_modules/
 LinhLongApp/dist/
 
-# Allow checked in lockfile if desired; comment out above node lock ignores if you want package-lock.json checked in
+# Keep files for demo
+!LinhLong.db
+!localhost-cert.pem
+!localhost-key.pem

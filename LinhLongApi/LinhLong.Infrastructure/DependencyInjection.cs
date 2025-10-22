@@ -13,7 +13,7 @@ namespace LinhLong.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<AppDbContext>(opt =>
-                opt.UseSqlServer(configuration.GetConnectionString("Default"),
+                opt.UseSqlite(configuration.GetConnectionString("Default"),
                 sql => sql.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
 
             services.AddIdentityCore<ApplicationUser>(options =>
